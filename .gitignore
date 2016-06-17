@@ -1,0 +1,2 @@
+# don't commit bower_components
+bower_components/*
