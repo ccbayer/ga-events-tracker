@@ -1,0 +1,31 @@
+.debug-highlight-event-section {
+  border: 1px solid red !important;
+  position: relative;
+}
+
+.debug-highlight-event {
+  border: 1px solid orange !important;
+}
+
+.debug-highlight-category {
+  border: 1px solid blue !important;
+}
+
+#ga-debug-message {
+  border: 1px dotted red;
+  background-color: rgba(255, 255, 255, 0.5);
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  padding: 10px;
+}
+#ga-debug-message #debug-event-section {
+  color: red;
+}
+#ga-debug-message #debug-category {
+  color: blue;
+}
+#ga-debug-message #debug-event {
+  color: orange;
+}

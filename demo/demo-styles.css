@@ -1,0 +1,14 @@
+html {
+	color: #333;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
+}
+
+body {
+	padding: 1%;
+	background-color: #e2e2e2;
+}
+
+.body-container {
+	max-width: 960px;
+	margin: 0 auto;
+}

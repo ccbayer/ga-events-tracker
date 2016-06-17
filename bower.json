@@ -1,0 +1,37 @@
+{
+  "name": "ga-events-tracker",
+  "authors": [
+    "Colin Bayer <ccbayer@gmail.com>"
+  ],
+  "version": "1.0",
+  "description": "A library for easily adding and debugging Google Analytics Events",
+  "main": "js/ga-events-tracker.js",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccbayer/ga-events-tracker.git"
+  },
+  "keywords": [
+    "Google Analytics Events",
+    "GA Events"
+  ],
+  "bugs": {
+    "url": "https://github.com/mlom/SocialShare/issues"
+  },
+  "license": "MIT",
+  "homepage": "http://www.colinbayer.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.0.0"
+  }
+}
