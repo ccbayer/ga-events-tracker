@@ -7,8 +7,8 @@ All you need to do is:
 1. Include Google Analytics on your page.
 2. Include GA Events Tracker in your Javascript
 3. Add two data attributes to the elements in the page you want to track events against:
-	* Category
-	* Label
+  * Category
+  * Label
 
 **Category** can be defined on a per-element basis, per-section / parent basis, or per-page basis.
 **Label** must be defined on a per-element basis, but can support more complex names by concationation.  For more information read this section.
@@ -116,3 +116,46 @@ If you want to track multiple actions, simply use a comma-separated list of acti
 ```
 
 If you set multiple actions that are not supported, it will send them all on the click event, which could add more statistical noise to the analytics.
+
+## Advanced Labels
+
+You can construct advanced labels by setting different levels of labels in your markup:
+
+* Page Level
+* Section Level
+* Element Level *(Default / Required)*
+
+The code will concatenate these different levels into a single label, separated by an underscore. You need not set all three levels, and can mix/match which label levels you want to set per element.
+
+For example, given the following markup:
+
+```
+<body data-ga-page-label="store">
+  <header data-ga-section-label="header">
+    <a href="/" data-ga-label="logo" data-ga-category="internal-link"><img src="your-logo.gif"/></a>
+  </header>
+</body>
+```
+
+Your constructed label will be:
+```
+store_header_logo
+```
+
+The data sent to GA will be:
+
+```
+ga('send', 'event', 'internal-link', 'click', 'store_header_logo');
+```
+
+Which will indicate to you in GA that somebody clicked the `logo`, in the `header`, on the `store` page.
+
+No additional configuration is necessary to use this feature, simply add the data attributes to the markup. If the code finds `data-ga-section-label` and `data-ga-page-label` attributes, it will automatically concatenate them into the label for that element. Additionally, if you do not want a `page` or `section` level label, simply omit these attributes from your markup. The chart below displays possible outcomes given the above markup.  
+
+
+| Page Label | Section Label | Element Label | Concatenated Label, sent to GA |
+| ----- | ----- | ---- | --- | --- |
+| store | header | logo| `home_nav_logo` |
+| [Null] | header | logo | `nav_logo` |
+| store | [Null] | logo | `home_logo` |
+| [Null] | [Null] | logo | `logo`|
