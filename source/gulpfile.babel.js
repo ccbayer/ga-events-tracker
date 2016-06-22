@@ -9,6 +9,8 @@ gulp.task('scripts', () => {
 	.pipe($.babel({
             presets: ['es2015']
         }))
+	.pipe($.eslint(options))
+	.pipe($.eslint.format())
 	.pipe(gulp.dest('./js'))
 });
 
