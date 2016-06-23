@@ -49,7 +49,7 @@ $.extend(window.gaEvents, {
 	},
 	getParentLabel: function getParentLabel($el, whichLabel) {
 		var returnVal = '',
-		    label = $el.closest('data-ga-' + whichLabel + '-label');
+		    label = $el.closest('[data-ga-' + whichLabel + '-label]').attr('data-ga-' + whichLabel + '-label');
 		if (_typeof(label != "undefined") && label.length > 0) {
 			returnVal = label + '_';
 		}
@@ -150,28 +150,25 @@ var analyticsService = new gaEvents.AnalyticsService();
 			$('body').append(gaEvents.template);
 
 			// debug event sections
-			$('[data-event-section]').on('mouseover', function () {
-				$('[data-event-section]').removeClass('debug-highlight-event-section');
-				$(this).addClass('debug-highlight-event-section');
-				gaEvents.displayDebugInfo('event-section', $(this).data('eventSection'));
-			});
-
-			$('[data-event-section]').on('mouseout', function () {
-				gaEvents.clearDebugInfo('event-section');
+			$('[data-ga-event]').on('mouseover', function () {
+				gaEvents.displayDebugInfo('event', $(this).data('gaEvent'));
 			});
 
 			$('[data-ga-page-label]').on('mouseover', function () {
-				var $el = $(this),
-				    theEvent = $this.data('gaEvent'),
-				    pageLabel = gaEvents.getParentLabel($el, 'page'),
-				    sectionLabel = gaEvents.getParentLabel($el, 'section');
-				if (pageLabel) {
-					$('#debug-label-page').show().find('span').html('pageLabel');
-				}
-				if (sectionLabel) {
-					$('#debug-label-section').show().find('span').html('sectionLabel');
-				}
-				gaEvents.displayDebugInfo('event', theEvent);
+				var $this = $(this),
+				    $debug = $('#debug-label-page'),
+				    $span = $debug.find('span');
+
+				$this.css({ 'border': '1px solid red' });
+
+				$debug.removeAttr('css');
+				$span.html($this.attr('data-ga-page-label'));
+			});
+
+			// label
+			$('[data-ga-label]').on('mouseover', function () {
+				var label = gaEvents.getLabel($(this));
+				gaEvents.displayDebugInfo('label', label);
 			});
 
 			// debug categories
@@ -188,7 +185,7 @@ var analyticsService = new gaEvents.AnalyticsService();
 			});
 
 			// debug tracking info
-			$('data*=[ga-]').on('mouseout', function () {
+			$('[data*=ga-]').on('mouseout', function () {
 				gaEvents.clearDebugInfo('event');
 				gaEvents.clearDebugInfo('category');
 			});
