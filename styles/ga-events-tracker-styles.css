@@ -29,3 +29,19 @@
 #ga-debug-message #debug-event {
   color: orange;
 }
+
+.debug-label-section-msg {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.debug-position-relative {
+  position: relative;
+}
+.debug-label-page {
+  border: 1px solid red;
+}
+
+.debug-label-section {
+  border: 1px solid green;
+}
