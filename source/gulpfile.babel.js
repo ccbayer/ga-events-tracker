@@ -23,8 +23,13 @@ gulp.task('scripts', () => {
 	.pipe(gulp.dest('../js/'))
 });
 
+gulp.task('watch', () => {
+  console.log('watching for changes...');
+  gulp.watch('./js/*.js', ['build']);
+});
+
 gulp.task('build', ['lint', 'scripts'], () => {
-	return gulp.src('../js/*.js')
+	return gulp.src('../js/*.js', '!../js/*.min.js')
 	.pipe($.uglify())
 	.pipe($.rename({
 		suffix: '.min'

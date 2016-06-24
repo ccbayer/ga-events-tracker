@@ -8,7 +8,7 @@ $.extend(window.gaEvents,
 		whitelist: [],
 		queryStringKey: "debug",
 		queryStringValue: "true",
-		defaultEvent: "click"
+		defaultAction: "click"
 	},
 	settings: {},
 	isInWhiteList: function() {
@@ -70,9 +70,6 @@ $.extend(window.gaEvents,
 	getValue: function($el) {
 		return $el.data('gaValue');
 	},
-	getEvent: function($el) {
-		return $el.data('gaEvent');
-	},
 	getAction: function($el) {
 		return $el.data('gaAction');
 	},
@@ -82,13 +79,10 @@ $.extend(window.gaEvents,
 	},
 	template: `
 	<div id="ga-debug-message">
-		<div>Category: <span id="debug-category"></span></div>
-		<div>
-			<div style="display: none;" id="debug-label-page">Label - Page: <span></span></div>
-			<div style="display: none;" id="debug=label-section">Label - Section: <span></span></div>
-			Label: <span id="debug-label"></span>
-		</div>
-		<div>Event: <span id="debug-event"></span></div>
+		<div><strong>Category:</strong> <span id="debug-category"></span></div>
+		<div><strong>Action:</strong> <span id="debug-action"></span></div>
+		<div><strong>Label:</strong> <span id="debug-label"></span></div>
+		<div><strong>Value:</strong> <span id="debug-value"></span></div>
 	</div>`
 });
 
@@ -118,11 +112,10 @@ var analyticsService = new gaEvents.AnalyticsService();
 			$this = $(this),
 			category = gaEvents.getCategory($this),
 			action = gaEvents.getAction($this),
-			theAction = action ? action : gaEvents.settings.defaultEvent,
+			theAction = action ? action : gaEvents.settings.defaultAction,
 			label = gaEvents.getLabel($this),
 			value = ""
 		;
-		
 		if(typeof(category) !== "undefined") {
 			analyticsService.trackEvent(category, theAction, label, value);
 		}
@@ -163,46 +156,46 @@ var analyticsService = new gaEvents.AnalyticsService();
 	if(gaEvents.getQueryVariable(gaEvents.settings.queryStringKey, gaEvents.settings.queryStringValue)) {
 
 		gaEvents.debugMode = true;
+		var pageSectionLabelDebugMessage = function(which, value) { 
+			return `<div class="debug-label-section-msg debug-label-${which}" id="debug-label-${which}"><strong>Label - ${which}:</strong> <span>${value}</span></div>`;
+		}
 
 		// add new element for debugging output
 		$('body').append(gaEvents.template);
 
-		// debug event sections
-		$('[data-ga-event]').on('mouseover', function(){
-			gaEvents.displayDebugInfo('event', $(this).data('gaEvent'));
-		});
-
-		$('[data-ga-page-label]').on('mouseover', function() {
+		// page / section labels
+		$('[data-ga-page-label], [data-ga-section-label]').on('mouseover', function() {
 			var 
 				$this = $(this),
-				$debug = $('#debug-label-page'),
-				$span = $debug.find('span')
+				which = $this.data('gaPageLabel') ? 'page' : 'section',
+				output = pageSectionLabelDebugMessage(which, $this.attr('data-ga-' + which +'-label'));
 			;
-
-			$this.css({'border':'1px solid red'});
-
-			$debug.removeAttr('css');
-			$span.html($this.attr('data-ga-page-label'));
+			$this.addClass('debug-position-relative debug-label-' + which).append(output);
 		});
 
+		$('[data-ga-page-label], [data-ga-section-label]').on('mouseout', function() {
+			var 
+				$this = $(this),
+				which = $this.data('gaPageLabel') ? 'page' : 'section',
+				output = pageSectionLabelDebugMessage(which, $this.attr('data-ga-page-label'));
+			;
+			$this.removeClass('debug-position-relative debug-label-' + which);
+			$this.find('debug-label-section-msg').remove();
+		});
 
-		// label
+		// label & action
 		$('[data-ga-label]').on('mouseover', function() {
-			var label = gaEvents.getLabel($(this));
+			var 
+				label = gaEvents.getLabel($(this)),
+				action = $(this).data('gaAction') ? $(this).data('gaAction') : gaEvents.settings.defaultAction
+			;
+			gaEvents.displayDebugInfo('action', action);
 			gaEvents.displayDebugInfo('label', label);
 		});
 
 		// debug categories
 		$('[data-ga-category]').on('mouseover', function() {
 			gaEvents.displayDebugInfo('category', $(this).data('gaCategory'));
-		});
-
-		// debug tracking info
-		$('[data-tracking-info]').on('mouseover', function() {
-
-			$('[data-tracking-info]').removeClass('debug-highlight-event');
-			$(this).addClass('debug-highlight-event');
-			gaEvents.displayDebugInfo('event', $(this).data('trackingInfo'));
 		});
 
 		// debug tracking info

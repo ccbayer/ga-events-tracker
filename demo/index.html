@@ -10,10 +10,20 @@
         <link rel="stylesheet" href="../styles/ga-events-tracker-styles.css">
     </head>
     <body data-ga-page-label="demo">
+    <header data-ga-section-label="heading">
+        <a href="#" data-ga-category="link" data-ga-label="Logo"><img src="http://placehold.it/75x75"/></a>
+        <nav data-ga-section-label="navigation">
+            <ul>
+                <li><a href="#" data-ga-category="nav-link" data-ga-label="home">Home</a></li>
+                <li><a href="#about" data-ga-category="nav-link" data-ga-label="about">About</a></li>
+                <li><a href="#buy-now" data-ga-category="nav-link" data-ga-label="buy-now">Buy Now</a></li>
+            </ul>
+        </nav>
+    </header>
     <div class="body-container" data-ga-section-label="body-container">
         <h1>GA Events Tracker Demo</h1>
 
-        <a href="#" id="demo-button-1" data-ga-label="test" data-ga-category="button" data-ga-event="click" data-ga-action="buy">Test</a>
+        <a href="#" id="demo-button-1" data-ga-category="link" data-ga-label="buy-now">Buy Now</a>
 
     </div>
 
@@ -22,7 +32,7 @@
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.12.0.min.js"><\/script>')</script>
         <script src="../js/ga-events-tracker.js"></script>
         <script>
-        // settings
+            // settings
             /* $(document).gaEventTracker({
                 gaObjectName: "zga",
                 whitelist: [],
@@ -30,7 +40,7 @@
                 queryStringValue: "a",
                 defaultEvent: "click"
             });
-*/
+            */
             console.log('Current GA Events Tracker Settings:');
             console.log(gaEvents.settings);
         </script>
